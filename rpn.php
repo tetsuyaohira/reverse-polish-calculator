@@ -19,4 +19,18 @@ function addHistory($stack, $desc)
 }
 
 // HTMLフォームを出力
+$npn_ = htmlentities($rpn, ENT_QUOTES);
+echo <<< EOS
+<!DOCTYPE html><meta charset="UTF-8">
+<form>
+    RPN: <input name="rpn" value="$rpn_" size="30"><br>
+    <input type="submit" value="計算">
+</form><hr>
+<div>答え: $answer</div><hr>
+<table>
+    <tr><td>操作</td></tr>
+    <tr><td>スタック</td></tr>
+    $history
+</table>
+EOS;
 
