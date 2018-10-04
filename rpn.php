@@ -16,12 +16,12 @@ function calcRPN($str)
         if (preg_match('#^[0-9\.]+$#', $t)) {
             $stack[] = floatval($t);
             addHistory($stack, "$t: push");
-            continee;
+            continue;
         }
 
         // 四則演算
-        $b = array_pop($stacj);
-        $a = array_pop($stacj);
+        $b = array_pop($stack);
+        $a = array_pop($stack);
         switch ($t) {
             case '+' :
                 $c = ($a + $b);
@@ -41,9 +41,10 @@ function calcRPN($str)
             default:
                 return 'error';
         }
+        $stack[] = $c;
+        addHistory($stack, "$t: pop $a $b, push $c");
     }
-    $stack[] = $c;
-    addHistory($stack, "$t: pop $a $b, push $c");
+    return array_pop($stack);
 }
 
 //
@@ -51,7 +52,7 @@ function addHistory($stack, $desc)
 {
     global $history;
     $line = "<td>$desc</td>" .
-        "<td>[" . implode('', '', $stack) . "]</td>";
+        "<td>[" . implode(", ", $stack) . "]</td>";
     $history .= "<tr>" . $line . "</tr>";
 }
 
